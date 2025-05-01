@@ -14,5 +14,18 @@ It focuses on clarity, modularity, and reactivity — without the complexity of 
 ## Quick Example
 
 ```go
-counter := counter.New()
-counter.Mount(solidgo.Body())
+package main
+
+import (
+	c "app/counter"
+	s "app/golid"
+)
+
+func main() {
+	c1 := c.New()
+	c1.Mount(s.Body())
+
+	select {}
+}
+```
+
