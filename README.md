@@ -15,6 +15,8 @@ With Golid, you can build reactive web apps using:
 - ✅ Signals and components
 - ✅ Tiny `.wasm` bundles (TinyGo optional)
 - ✅ No Node.js, no npm, no React, no JSX, no bundlers
+- Command line ""golid-dev" (plus auto-compile and hot-reload (client-side))
+- Self-sufficient (no external tools needed (no external server, no bash, no Make)) 
 
 ---
 
@@ -26,24 +28,20 @@ With Golid, you can build reactive web apps using:
    cd Golid
    ```
 
-2. Copy the Go WASM runtime:
-    ```
-    go env GOROOT
-    cp $(go env GOROOT)/misc/wasm/wasm_exec.js .
+2. Build the CLI:
+    ```bash
+    cd cmd/devserver
+    go build
+    mv golid-dev ../..
 	```
 
-3. Build the webassembly binary:
-    ```
-	make wasm
+3. Run the CLI (development server) :
+    ```bash
+    ./golid-dev
 	```
 
-4.  Start a local server:
-    ```
-	python3 -m http.server 8090
-	```
-
-5. Watch the app in the browse:
-    ```
+4. Watch the app in a browser:
+    ```bash
 	http://localhost:8090
 	```
 
