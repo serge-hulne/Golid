@@ -25,18 +25,21 @@ func New() *Counter {
 		MinButtonID:  golid.ID(),
 	}
 }
+
 func (c *Counter) Render() Node {
 	return Div(
-		Style("border: 1px solid grey; padding: 10px; margin: 10px ;"),
+		Style("border: 1px solid orange; padding: 10px; margin: 10px ;"),
 		Div(
 			ID(c.DivID),
 			Text(fmt.Sprintf("Count = %d", c.Counter.Get())),
 		),
 		Button(
+			Style("margin: 3px ;"),
 			ID(c.PlusButtonID),
 			Text("+"),
 		),
 		Button(
+			Style("margin: 3px ;"),
 			ID(c.MinButtonID),
 			Text("-"),
 		),
