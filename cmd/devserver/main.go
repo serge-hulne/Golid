@@ -163,21 +163,59 @@ func ensureFileExists(filename, defaultContent string) {
 	}
 }
 
+// func ensureWasmExec() {
+// 	if _, err := os.Stat("wasm_exec.js"); os.IsNotExist(err) {
+// 		out, err := exec.Command("go", "env", "GOROOT").Output()
+// 		if err != nil {
+// 			log.Fatalf("❌ Failed to get GOROOT: %v", err)
+// 		}
+// 		wasmPath := filepath.Join(strings.TrimSpace(string(out)), "misc", "wasm", "wasm_exec.js")
+// 		input, err := os.ReadFile(wasmPath)
+// 		if err != nil {
+// 			log.Fatalf("❌ Failed to read wasm_exec.js from Go installation: %v", err)
+// 		}
+// 		err = os.WriteFile("wasm_exec.js", input, 0644)
+// 		if err != nil {
+// 			log.Fatalf("❌ Failed to write wasm_exec.js to project: %v", err)
+// 		}
+// 		log.Println("✅ Copied wasm_exec.js from Go installation")
+// 	}
+// }
+
 func ensureWasmExec() {
 	if _, err := os.Stat("wasm_exec.js"); os.IsNotExist(err) {
 		out, err := exec.Command("go", "env", "GOROOT").Output()
 		if err != nil {
 			log.Fatalf("❌ Failed to get GOROOT: %v", err)
 		}
-		wasmPath := filepath.Join(strings.TrimSpace(string(out)), "misc", "wasm", "wasm_exec.js")
+		root := strings.TrimSpace(string(out))
+
+		// Try new location first
+		candidates := []string{
+			filepath.Join(root, "lib", "wasm", "wasm_exec.js"),  // Go 1.21+
+			filepath.Join(root, "misc", "wasm", "wasm_exec.js"), // legacy
+		}
+
+		var wasmPath string
+		for _, candidate := range candidates {
+			if _, err := os.Stat(candidate); err == nil {
+				wasmPath = candidate
+				break
+			}
+		}
+
+		if wasmPath == "" {
+			log.Fatalf("❌ Could not locate wasm_exec.js in known GOROOT paths.")
+		}
+
 		input, err := os.ReadFile(wasmPath)
 		if err != nil {
-			log.Fatalf("❌ Failed to read wasm_exec.js from Go installation: %v", err)
+			log.Fatalf("❌ Failed to read wasm_exec.js: %v", err)
 		}
 		err = os.WriteFile("wasm_exec.js", input, 0644)
 		if err != nil {
-			log.Fatalf("❌ Failed to write wasm_exec.js to project: %v", err)
+			log.Fatalf("❌ Failed to write wasm_exec.js: %v", err)
 		}
-		log.Println("✅ Copied wasm_exec.js from Go installation")
+		log.Printf("✅ Copied wasm_exec.js from: %s", wasmPath)
 	}
 }
