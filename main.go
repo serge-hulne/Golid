@@ -12,12 +12,12 @@ func main() {
 
 	// ---Uncomment one of the following examples to run it ---
 
-	//app := CounterComponent()
+	app := CounterComponent()
 	//app := List1()
 	//app := List2()
 	// app := TextCopyDemo()
 	// app := TextCopyDemo1()
-	app := TextCopyDemo2()
+	//app := TextCopyDemo2()
 	golid.Render(app)
 	golid.Run()
 }
