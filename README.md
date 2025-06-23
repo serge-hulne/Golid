@@ -48,28 +48,37 @@ With Golid, you can build reactive web apps using:
 ## 💡 Example: Counter Component
 
 ```
-type Counter struct {
-    DivID        string
-    Counter      *golid.Signal[int]
-    PlusButtonID string
-    MinButtonID  string
-}
 
-func New() *Counter {
-    return &Counter{
-        DivID:        golid.ID(),
-        Counter:      golid.NewSignal(0),
-        PlusButtonID: golid.ID(),
-        MinButtonID:  golid.ID(),
-    }
-}
+func CounterComponent() Node {
+	// Observable (represents the state of the app)
+	count := golid.NewSignal(0)
 
-func (c *Counter) Render() Node {
-    return Div(
-        Div(ID(c.DivID), Text(fmt.Sprintf("Count = %d", c.Counter.Get()))),
-        Button(ID(c.PlusButtonID), Text("+")),
-        Button(ID(c.MinButtonID), Text("-")),
-    )
+	return Div(
+		Style("border: 1px solid orange; padding: 10px; margin: 10px;"),
+
+		// Bind text Element to the reactive count signal (observable)
+		golid.Bind(func() Node {
+			return Div(Text(fmt.Sprintf("Count = %d", count.Get())))
+		}),
+
+		// [+] Button element
+		Button(
+			Style("margin: 3px;"),
+			Text("+"),
+			golid.OnClick(func() {
+				count.Set(count.Get() + 1)
+			}),
+		),
+
+		// [-] Button element
+		Button(
+			Style("margin: 3px;"),
+			Text("-"),
+			golid.OnClick(func() {
+				count.Set(count.Get() - 1)
+			}),
+		),
+	)
 }
     
 ```
