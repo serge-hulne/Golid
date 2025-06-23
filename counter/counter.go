@@ -19,10 +19,10 @@ type Counter struct {
 
 func New() *Counter {
 	return &Counter{
-		DivID:        golid.ID(),
+		DivID:        golid.GenID(),
 		Counter:      golid.NewSignal(0),
-		PlusButtonID: golid.ID(),
-		MinButtonID:  golid.ID(),
+		PlusButtonID: golid.GenID(),
+		MinButtonID:  golid.GenID(),
 	}
 }
 
