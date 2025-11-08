@@ -105,5 +105,5 @@ func CounterComponent() Node {
 
 ## 📜 License
 
-Golid is open source under the GNU General Public License v3.
+Golid is open source under the Apache-2.0 license.
 
